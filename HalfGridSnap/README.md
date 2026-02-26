@@ -1,4 +1,4 @@
-﻿# HalfGridSnap
+# HalfGridSnap
 
 允许将坐标吸附到“半格点”。本插件通过 Harmony Transpiler 替换游戏中 `PlanetGrid` 的硬编码常量，从而改变网格吸附间距，实现半格点吸附效果。
 

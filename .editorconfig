@@ -1,0 +1,16 @@
+# 表示这是根配置文件，停止向上查找
+root = true
+
+# 对所有文件应用以下配置
+[*]
+# 设置文件编码为 UTF-8（默认无 BOM）
+charset = utf-8
+# 统一换行符为 LF（Unix/Linux/macOS 标准）
+end_of_line = lf
+# 文件末尾保留一个空行
+insert_final_newline = true
+# 移除行尾空白字符
+trim_trailing_whitespace = true
+# 使用 4 个空格缩进
+indent_style = space
+indent_size = 4

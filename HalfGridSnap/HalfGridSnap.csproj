@@ -22,11 +22,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
-    <PackageReference
-      Include="Microsoft.NETFramework.ReferenceAssemblies"
-      Version="1.0.2"
-      PrivateAssets="all"
-    />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
@@ -57,24 +53,11 @@
       <DocFiles Include="$(MSBuildProjectDirectory)\README.md" />
       <DocFiles Include="$(MSBuildProjectDirectory)\CHANGELOG.md" />
     </ItemGroup>
-    <Copy
-      SourceFiles="@(AssetsFiles)"
-      DestinationFiles="$(StagingDir)\%(RecursiveDir)%(Filename)%(Extension)"
-      SkipUnchangedFiles="true"
-      Condition="'@(AssetsFiles)' != ''"
-    />
-    <Copy
-      SourceFiles="@(DocFiles)"
-      DestinationFolder="$(StagingDir)"
-      SkipUnchangedFiles="true"
-      Condition="'@(DocFiles)' != ''"
-    />
+    <Copy SourceFiles="@(AssetsFiles)" DestinationFiles="$(StagingDir)\%(RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" Condition="'@(AssetsFiles)' != ''" />
+    <Copy SourceFiles="@(DocFiles)" DestinationFolder="$(StagingDir)" SkipUnchangedFiles="true" Condition="'@(DocFiles)' != ''" />
     <Delete Files="$(ZipFilePath)" Condition="Exists('$(ZipFilePath)')" />
 
-    <Exec
-      Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;Compress-Archive -Path '$(StagingDir)\*' -DestinationPath '$(ZipFilePath)' -Force&quot;"
-      ContinueOnError="false"
-    />
+    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;Compress-Archive -Path '$(StagingDir)\*' -DestinationPath '$(ZipFilePath)' -Force&quot;" ContinueOnError="false" />
 
     <RemoveDir Directories="$(StagingDir)" />
 
