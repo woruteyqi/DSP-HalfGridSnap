@@ -1,72 +1,93 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <AssemblyName>HalfGridSnap</AssemblyName>
-    <Product>HalfGridSnap</Product>
-    <Version>1.0.0</Version>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>latest</LangVersion>
-    <RestoreAdditionalProjectSources>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <AssemblyName>HalfGridSnap</AssemblyName>
+        <Product>HalfGridSnap</Product>
+        <Version>1.1.0</Version>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+        <RestoreAdditionalProjectSources>
       https://api.nuget.org/v3/index.json;
       https://nuget.bepinex.dev/v3/index.json;
       https://nuget.samboy.dev/v3/index.json
     </RestoreAdditionalProjectSources>
-    <RootNamespace>HalfGridSnap</RootNamespace>
-    <GameDir>E:\SteamLibrary\steamapps\common\Dyson Sphere Program\</GameDir>
-    <OutputDir>$(MSBuildProjectDirectory)\Output</OutputDir>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="BepInEx.Core" Version="5.4.21" />
-    <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
-    <PackageReference Include="DysonSphereProgram.Modding.CommonAPI" Version="1.6.5" />
-    <PackageReference Include="HarmonyX" Version="2.16.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>$(GameDir)\DSPGAME_Data\Managed\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>$(GameDir)\DSPGAME_Data\Managed\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>$(GameDir)\DSPGAME_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <Target Name="PackagePlugin" AfterTargets="Build">
-    <PropertyGroup>
-      <ZipFileName>$(AssemblyName)-$(Version).zip</ZipFileName>
-      <ZipFilePath>$(OutputDir)\$(ZipFileName)</ZipFilePath>
-      <StagingDir>$(OutputDir)\.staging_$(AssemblyName)</StagingDir>
+        <RootNamespace>HalfGridSnap</RootNamespace>
+        <GameDir>E:\SteamLibrary\steamapps\common\Dyson Sphere Program\</GameDir>
+        <OutputDir>$(MSBuildProjectDirectory)\Output</OutputDir>
     </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="BepInEx.Core" Version="5.4.21" />
+        <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
+        <PackageReference Include="DysonSphereProgram.Modding.CommonAPI" Version="1.6.5" />
+        <PackageReference Include="HarmonyX" Version="2.16.0" />
+    </ItemGroup>
 
-    <MakeDir Directories="$(OutputDir)" />
-    <MakeDir Directories="$(StagingDir)" />
-
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(StagingDir)" SkipUnchangedFiles="true" />
+    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+        <PackageReference
+            Include="Microsoft.NETFramework.ReferenceAssemblies"
+            Version="1.0.2"
+            PrivateAssets="all"
+        />
+    </ItemGroup>
 
     <ItemGroup>
-      <AssetsFiles Include="$(MSBuildProjectDirectory)\Assets\**\*" />
-      <DocFiles Include="$(MSBuildProjectDirectory)\README.md" />
-      <DocFiles Include="$(MSBuildProjectDirectory)\CHANGELOG.md" />
+        <Reference Include="Assembly-CSharp">
+            <HintPath>$(GameDir)\DSPGAME_Data\Managed\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine">
+            <HintPath>$(GameDir)\DSPGAME_Data\Managed\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(GameDir)\DSPGAME_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
     </ItemGroup>
-    <Copy SourceFiles="@(AssetsFiles)" DestinationFiles="$(StagingDir)\%(RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" Condition="'@(AssetsFiles)' != ''" />
-    <Copy SourceFiles="@(DocFiles)" DestinationFolder="$(StagingDir)" SkipUnchangedFiles="true" Condition="'@(DocFiles)' != ''" />
-    <Delete Files="$(ZipFilePath)" Condition="Exists('$(ZipFilePath)')" />
+    <Target Name="PackagePlugin" AfterTargets="Build">
+        <PropertyGroup>
+            <ZipFileName>$(AssemblyName)-$(Version).zip</ZipFileName>
+            <ZipFilePath>$(OutputDir)\$(ZipFileName)</ZipFilePath>
+            <StagingDir>$(OutputDir)\.staging_$(AssemblyName)</StagingDir>
+        </PropertyGroup>
 
-    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;Compress-Archive -Path '$(StagingDir)\*' -DestinationPath '$(ZipFilePath)' -Force&quot;" ContinueOnError="false" />
+        <MakeDir Directories="$(OutputDir)" />
+        <MakeDir Directories="$(StagingDir)" />
 
-    <RemoveDir Directories="$(StagingDir)" />
+        <Copy
+            SourceFiles="$(TargetPath)"
+            DestinationFolder="$(StagingDir)"
+            SkipUnchangedFiles="true"
+        />
 
-    <Message Text="✓ Plugin packaged to: $(ZipFilePath)" Importance="high" />
-  </Target>
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties assets_4manifest_1json__JsonSchema="" />
-    </VisualStudio>
-  </ProjectExtensions>
+        <ItemGroup>
+            <AssetsFiles Include="$(MSBuildProjectDirectory)\Assets\**\*" />
+            <DocFiles Include="$(MSBuildProjectDirectory)\README.md" />
+            <DocFiles Include="$(MSBuildProjectDirectory)\CHANGELOG.md" />
+        </ItemGroup>
+        <Copy
+            SourceFiles="@(AssetsFiles)"
+            DestinationFiles="$(StagingDir)\%(RecursiveDir)%(Filename)%(Extension)"
+            SkipUnchangedFiles="true"
+            Condition="'@(AssetsFiles)' != ''"
+        />
+        <Copy
+            SourceFiles="@(DocFiles)"
+            DestinationFolder="$(StagingDir)"
+            SkipUnchangedFiles="true"
+            Condition="'@(DocFiles)' != ''"
+        />
+        <Delete Files="$(ZipFilePath)" Condition="Exists('$(ZipFilePath)')" />
+
+        <Exec
+            Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;Compress-Archive -Path '$(StagingDir)\*' -DestinationPath '$(ZipFilePath)' -Force&quot;"
+            ContinueOnError="false"
+        />
+
+        <RemoveDir Directories="$(StagingDir)" />
+
+        <Message Text="✓ Plugin packaged to: $(ZipFilePath)" Importance="high" />
+    </Target>
+    <ProjectExtensions>
+        <VisualStudio>
+            <UserProperties assets_4manifest_1json__JsonSchema="" />
+        </VisualStudio>
+    </ProjectExtensions>
 </Project>
