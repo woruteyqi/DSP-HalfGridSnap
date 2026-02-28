@@ -22,7 +22,12 @@ public class HalfGridSnap : BaseUnityPlugin
         get { return field; }
         set
         {
-            if (value == true)
+            if (field == value)
+                return;
+            else
+                field = value;
+
+            if (IsEnable)
             {
                 harmony.PatchAll(typeof(PlanetGridPatch));
             }
@@ -30,7 +35,6 @@ public class HalfGridSnap : BaseUnityPlugin
             {
                 harmony.UnpatchSelf();
             }
-            field = value;
         }
     }
 
@@ -38,6 +42,7 @@ public class HalfGridSnap : BaseUnityPlugin
     {
         Logger = base.Logger;
         RegisterKeyBinds();
+        IsEnable = true;
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
 
@@ -45,7 +50,7 @@ public class HalfGridSnap : BaseUnityPlugin
     {
         var defaultKey = new CombineKey
         {
-            keyCode = (int)KeyCode.LeftAlt,
+            keyCode = (int)KeyCode.BackQuote,
             action = ECombineKeyAction.OnceClick,
         };
 
@@ -54,7 +59,7 @@ public class HalfGridSnap : BaseUnityPlugin
             name = keyName,
             key = defaultKey,
             canOverride = true,
-            conflictGroup = 2048 | 4,
+            conflictGroup = KeyBindConflict.KEYBOARD_KEYBIND | KeyBindConflict.BUILD_MODE_1,
         };
         CustomKeyBindSystem.RegisterKeyBind<ReleaseKeyBind>(builtinKey);
         LocalizationModule.RegisterTranslation(keyName, "Toggle Half Grid Snap Function");
