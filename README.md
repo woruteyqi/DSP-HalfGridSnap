@@ -4,6 +4,7 @@ Allows snapping coordinates to "half-grid points". This plugin modifies the hard
 
 ## Main Features
 - Replaces the hardcoded constant `5.0f` in `PlanetGrid` with `10.0f`, altering the snapping interval to achieve half-grid behavior.
+- At runtime, toggle half-grid snap by pressing the default shortcut key `~` (default is enabled) ,the shortcut can be customized in-game.
 
 ## Installation
 1. Directly copy the output DLL to `BepInEx/plugins`, or install by importing the ZIP archive from the `Output` directory via a mod manager.

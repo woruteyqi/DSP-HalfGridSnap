@@ -1,9 +1,10 @@
-# HalfGridSnap
+# HalfGridSnap | [English Description](https://github.com/woruteyqi/DSP-HalfGridSnap)
 
 允许将坐标吸附到“半格点”。本插件通过 Harmony Transpiler 替换游戏中 `PlanetGrid` 的硬编码常量，从而改变网格吸附间距，实现半格点吸附效果。
 
 ## 主要功能
 - 将 `PlanetGrid` 中的硬编码常量 `5.0f` 替换为 `10.0f`，改变吸附间距以实现半格点行为。
+- 在运行时通过按默认快捷键 `~` 切换半格点吸附（默认已启用），快捷键可通过游戏内自定义。
 
 ## 安装
 1. 直接拷贝输出的 DLL 到 `BepInEx/plugins` 或者通过模组管理器导入 Output 目录下的 zip 压缩包进行安装。
@@ -16,6 +17,6 @@
    - Visual Studio：打开解决方案 -> 右键项目 -> __生成__。
 
 ## 实现说明（开发者）
-- 关键实现位于 `PlanetGridPatch.cs`：
-  - 使用 `HarmonyTranspiler` 遍历 IL 指令，查找 `ldc.r4 5.0`，并将其替换为 `ldc.r4 10.0`。
+ - 关键实现位于 `PlanetGridPatch.cs`：
+   - 使用 `HarmonyTranspiler` 遍历 IL 指令，查找 `ldc.r4 5.0`，并将其替换为 `ldc.r4 10.0`。
   - 这样修改后，`PlanetGrid` 的吸附行为会以新的常量进行计算，从而实现期望的吸附效果。
