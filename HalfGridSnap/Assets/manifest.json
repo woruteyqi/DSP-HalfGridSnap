@@ -1,9 +1,10 @@
 {
-  "name": "HalfGridSnap",
-  "version_number": "1.1.0",
-  "website_url": "https://github.com/woruteyqi/DSP-HalfGridSnap",
-  "description": "Allows you to snap coordinates to half-grid points. 允许你进行对半格点的坐标进行吸附。",
-  "dependencies": [
-    "xiaoye97-BepInEx-5.4.17"
-  ]
+    "name": "HalfGridSnap",
+    "version_number": "1.1.0",
+    "website_url": "https://github.com/woruteyqi/DSP-HalfGridSnap",
+    "description": "Allows you to snap coordinates to half-grid points. 允许你进行对半格点的坐标进行吸附。",
+    "dependencies": [
+        "xiaoye97-BepInEx-5.4.17",
+        "CommonAPI-CommonAPI-1.6.7"
+    ]
 }
