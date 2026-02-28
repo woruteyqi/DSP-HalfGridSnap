@@ -48,6 +48,7 @@
             <StagingDir>$(OutputDir)\.staging_$(AssemblyName)</StagingDir>
         </PropertyGroup>
 
+        <RemoveDir Directories="$(OutputDir)" Condition="Exists('$(OutputDir)')" />
         <MakeDir Directories="$(OutputDir)" />
         <MakeDir Directories="$(StagingDir)" />
 
@@ -74,7 +75,6 @@
             SkipUnchangedFiles="true"
             Condition="'@(DocFiles)' != ''"
         />
-        <Delete Files="$(ZipFilePath)" Condition="Exists('$(ZipFilePath)')" />
 
         <Exec
             Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;Compress-Archive -Path '$(StagingDir)\*' -DestinationPath '$(ZipFilePath)' -Force&quot;"
